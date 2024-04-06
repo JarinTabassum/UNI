@@ -29,9 +29,9 @@ public:
 };
 
 Graph::Graph(int n,bool dir){
-    nVertices=n;
-    directed=dir;
-    adjacencyList=new node *[n];
+    nVertices=n; //int nVertices
+    directed=dir; //bool directed will have the dir=false or true initiated by the user
+    adjacencyList=new node *[n]; //node **adjacencyList
 //This line dynamically allocates an array of pointers to node objects.
 //The new keyword is used to allocate memory dynamically.
 //node*[n] indicates that adjacencyList will point to an array of pointers,
@@ -49,18 +49,18 @@ void Graph::addEdge(int u,int v){
         return;
     }
     node *n1=createNewNode(v); //adjacencyList=new *node[n]=nullptr was the initial one
-    n1->next=adjacencyList[u];
-    adjacencyList[u]=n1;
+    n1->next=adjacencyList[u]; //the nullptr will be after the new addded edge
+    adjacencyList[u]=n1; //the vertex head will point to the new added edge
 
     node *n2=createNewNode(u);
     n2->next=adjacencyList[v];
     adjacencyList[v]=n2;
 }
 
-bool Graph::isEdge(int u,int v){
-    node *current=adjacencyList[u];
-    for(int i=0;i<nVertices;i++){
-        if(current->data!=v || current!=nullptr){
+bool Graph::isEdge(int u,int v){ //for initialization we can skip this isEdge part
+    node *current=adjacencyList[u]; //will point to the head of the vertex
+    for(int i=0;i<nVertices;i++){ 
+        if(current->data!=v || current!=nullptr){ //if vertex doesnot point to that other edge or isnt nullptr
             current=current->next;
         }
     }
@@ -71,9 +71,9 @@ bool Graph::isEdge(int u,int v){
 void Graph::display(){
     cout<<"Printing list:\n";
     for(int i=0;i<nVertices;i++){
-        cout<<i<<":";
-        node *current=adjacencyList[i]; //adjacency list of that particular vertex
-        while(current!=nullptr){
+        cout<<i<<":"<<"\t"; //this will print the vertex
+        node *current=adjacencyList[i]; //head of that particular vertex
+        while(current!=nullptr){ //while head isnt null continue
             cout<<current->data<<"\t";
             current=current->next;
         }
@@ -81,7 +81,7 @@ void Graph::display(){
     }
 }
 
-Graph::~Graph(){
+Graph::~Graph(){ //destructor
     for(int i=0;i<nVertices;i++)
         delete adjacencyList[i];
     delete [] adjacencyList;
