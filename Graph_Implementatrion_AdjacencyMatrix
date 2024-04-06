@@ -82,3 +82,23 @@ int main(){
     g.addEdge(1,3);
     g.display();
 }
+
+
+/*int Graph::indegree(int u){
+    int in=0;
+    for(int i=0;i<nVertices;i++){
+        if(adjacencyMatrix[i][u]==1){
+            in++;
+        }
+    }
+    return in;
+}
+int Graph::outdegree(int u){
+    int out=0;
+    for(int i=0;i<nVertices;i++){
+    if(adjacencyMatrix[u][i]==1){
+        out++;
+    }
+    }
+    return out;
+}*/
