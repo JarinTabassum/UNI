@@ -96,3 +96,30 @@ int main(){
     g.display();
     }
 
+
+
+/*int Graph::indegree(int u){
+    int in=0;
+    for(int i=0;i<nVertices;i++){
+        node *current=adjacencyList[i];
+        while(current!=nullptr){
+            if(current->data==u){
+                in++;
+            }
+            current=current->next;
+        }
+    }
+    return in;
+}
+
+int Graph::outdegree(int u){
+    node *current=adjacencyList[u];
+    int out=0;
+    while(current!=nullptr){
+        out++;
+        current=current->next;
+    }
+    return out;
+}
+*/
+
