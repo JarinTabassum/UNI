@@ -1,0 +1,56 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+class Stack{
+    vector<int> q1;
+    vector<int> q2;
+public:
+// the back() function of the vector container returns a reference to the last element of the vector. It allows you to access the last element without removing it from the vector
+    //in push_back we add a new element to the last of the vector(like the temp=new int[n*2])
+    //in pop_back we remove the last element from the vector, effectively reducing its size by one
+    void push(int x){
+        while(!q1.empty()){
+            q2.push_back(q1.back()); //transferring the q1 elements to q2
+            q1.pop_back(); //while making the q1 empty
+        }
+        q1.push_back(x); //now the first element of q1 will be the new element as it is empty
+        while(!q2.empty()){
+            q1.push_back(q2.back()); //now we will put the q2 elements back to q1
+            q2.pop_back(); //while making the q2 empty
+        }
+    //thus the q1 will have a new vector where the new element is at the front just like stack
+
+    }
+    
+    int pop(){
+        if(q1.empty()){
+            cout<<"There is nothing to delete"<<endl;
+            return -1;
+        }
+        int top=q1[0]; //here after emptying and adding will make the last element first and as in stack we need the last element so we can access it through the first index
+        q1.erase(q1.begin()); //erasing the first element of vector
+        return top;
+    }
+    
+    void display(){
+        cout<<"Printing the stack:"<<endl;
+        for(int i=0;i<q1.size();i++){
+            cout<<q1[i]<<"\t";
+        }
+        cout<<endl;
+    }
+};
+int main(){
+Stack s;
+    s.push(1);
+    s.push(2);
+    s.push(3);
+    s.display();
+    s.push(4);
+    s.push(5);
+    s.display();
+    cout<<"The popped element is: "<<s.pop()<<endl;
+    s.display();
+    s.push(6);
+    s.display();
+}
