@@ -1,0 +1,71 @@
+#include<iostream>
+using namespace std;
+class Stack{
+    int n,top;
+    int *myS;
+public:
+    Stack(){
+        n=4;
+        top=-1;
+        myS=new int[n];
+    }
+    Stack(int n){
+        this->n=n;
+        top=-1;
+        myS=new int[n];
+    }
+    int isFull(){
+        if(top==n-1){ //when top is the last index of the array
+            return -1; 
+        }
+        return 0;
+    }
+    int isEmpty(){
+        if(top==-1){ //there is no element
+            return -1;
+        }
+        return 0;
+    }
+    void push(int x){
+        if(isFull()){
+            cout<<"No space left";
+        }
+        top++;
+        myS[top]=x;
+        //or we can write it as myS[++top]=x
+    }
+    int pop(){
+        if(isEmpty()){
+            cout<<"There is nothing to delete";
+            return -1;
+        }
+        int y=myS[top];
+        top--;
+        return y;
+        //return myS[top--]
+    }
+    int top_element(){
+        if(isEmpty()){
+            cout<<"There is nothing to show";
+            return -1;
+        }
+        return myS[top];
+    }
+    void display(){
+        cout<<"The stack elements are: ";
+        for(int i=top;i>-1;i--){
+            cout<<myS[i]<<"\t";
+        }
+        cout<<endl;
+    }
+};
+int main(){
+    Stack s1(4);
+    s1.push(5);
+    s1.push(6);
+    cout<<"The top element is: "<<s1.top_element()<<endl;
+    s1.push(7);
+    s1.push(8);
+    cout<<"The popped element is: "<<s1.pop()<<endl;
+    s1.display();
+}
