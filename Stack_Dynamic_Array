@@ -1,0 +1,89 @@
+#include<iostream>
+using namespace std;
+class Stack{
+    int top,n;
+    int *myS;
+public:
+    Stack(int n){
+        this->n=n;
+        top=-1;
+        myS=new int[n];
+    }
+    int isFull(){
+        if(top==n-1){
+            return -1;
+        }
+        return 0;
+    }
+    int isEmpty(){
+        if(top==-1){
+            cout<<"There is no element to work with."<<endl;
+            return -1;
+        }
+        return 0;
+    }
+    void push(int x){
+        if(isFull()){ //dynamic
+            cout<<"The stack is full, but lesse what we can do"<<endl;
+            int *temp=new int[n*2]; //creating a new array which will have one size more than before
+            for(int i=0;i<n;i++){
+                temp[i]=myS[i];
+            }
+            temp[n]=x; //the element of temp will have the element we want to push
+            delete [] myS; //now we dont need the previous array so delete it
+            myS=temp; //now myS(the stach) will be this new array
+            n=n*2; //as our array size has increased by 1
+            top++; //so is our top size
+        }
+        else{ //if the array isnt full
+            top++;
+            myS[top]=x;
+        }
+    }
+    int pop(){
+        if(isEmpty()){
+            cout<<"There is nothing to delete"<<endl;
+            return -1;
+        }
+        int y=myS[top];
+        top--;
+        return y;
+    }
+    void display(){
+        if(isEmpty()){
+            cout<<"There is nothing to show"<<endl;
+        }
+        cout<<"Printing the stack:"<<endl;
+        for(int i=top;i>-1;i--){
+            cout<<myS[i]<<"\t";
+        }
+        cout<<endl;
+    }
+    int top_element(){
+        if(isEmpty()){
+            cout<<"There is nothing to show"<<endl;
+        }
+        int y=myS[top];
+        return y;
+    }
+};
+int main(){
+    Stack s(3);
+    s.push(1);
+    s.push(2);
+    s.push(3);
+    s.display();
+    s.push(4);
+    s.push(5);
+    s.push(10);
+    s.push(11);
+    s.push(12);
+    s.push(13);
+    s.push(15);
+    //3*2=6*2=12 //so 3+ full, 6+ full, 12+ full
+    s.display();
+    cout<<"The popped element is: "<<s.pop()<<endl;
+    s.display();
+    s.push(6);
+    s.display();
+}
