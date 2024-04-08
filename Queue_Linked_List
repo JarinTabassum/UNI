@@ -1,0 +1,79 @@
+#include<iostream>
+using namespace std;
+struct node{
+    int data;
+    node *next;
+};
+node *createNewNode(int x){
+    node *newnode=new struct node();
+    newnode->data=x;
+    newnode->next=NULL;
+    return newnode;
+}
+class Queue{
+    node *head,*tail;
+    //here head will act as front and tail as rare
+    //front(first) delete, rare(last) add
+public:
+    Queue(){ //as linked list so doesnt need any size
+        head=NULL;
+        tail=NULL;
+    }
+    
+    void enQ(int y){
+        node *add_node=createNewNode(y);
+        if(tail==NULL){ //that would mean no element has been added yet
+            head=tail=add_node; //as it is the first element so according to queue both front and rare will point to that
+        }
+        else{ //add next to tail which will act as rare here
+            tail->next=add_node; //just add the element as we added a node at the last of the linked list
+            tail=add_node;
+        }
+    }
+    
+    int deQ(){ //delete the front (head)
+        if(head==NULL){ //there is no element to delete
+            cout<<"There is nothing to delete"<<endl;
+            return -1;
+        }
+        else{
+            int x=head->data; //we are storing the node's value 
+            node *temp=head; //then storing the node itself
+            head=head->next; //then we are changing the head to the next
+            if(head==NULL){ //if the head was the only element in the queue then after shifting it to the next (which is null) would mean there is no element left
+              tail==NULL; //hence we have to make tail NULL too as no element means head=tail=NULL
+            } 
+            free(temp); //we are freeing the stored head
+            return x; //returning the stored head's value
+        }
+    }
+    void display(){
+        node *current=head;
+        cout<<"Printing the queue:"<<endl;
+        while(current!=NULL){
+            cout<<current->data<<"\t";
+            current=current->next;
+        }
+        cout<<endl;
+    }
+}; //closing the constructor
+
+int main(){
+Queue q1;
+ q1.enQ(1);
+ q1.enQ(2);
+ q1.enQ(3);
+ q1.display();
+ q1.enQ(4);
+ q1.enQ(5);
+ q1.display();
+ q1.deQ();
+ q1.deQ();
+ q1.enQ(4);
+ q1.display();
+ q1.enQ(5);
+ q1.enQ(6);
+ q1.enQ(7);
+ q1.enQ(8);
+ q1.display();
+}
