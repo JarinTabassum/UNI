@@ -1,0 +1,93 @@
+#include<iostream>
+using namespace std;
+class Queue{
+    int rare,front,n,cnt;
+    int *q;
+public:
+    Queue(int n){
+        this->n=n;
+        rare=-1;
+        front=-1;
+        cnt=0;
+        q=new int[n];
+    }
+    int isEmpty(){
+        if(rare==-1 && front==-1){
+            return -1;
+        }
+        return 0;
+    }
+    void enQ(int x){
+        if(isEmpty()){
+            rare=front=0;
+            q[rare]=x;
+            cnt++;
+        }
+        else if((rare+1)%n==front) {
+            cout<<"The queue is full, yet lemme manage..."<<endl;
+            int *temp=new int[n+1]; //we are creating another array which will have one size more than the size of the former queue //resizing
+            for(int i=0;i<n;i++){
+                temp[i]=q[(front+i)%n]; //we are shifting all the elements of the former array to the new array
+            }
+            temp[n]=x; //we will add the new element to the last index (as it was full so after that it will be added)
+            delete[] q; //now we will delete the former queue array
+            q=temp; //then we will assign queue to the new resized array 
+            rare=cnt; //now after modification, we will set rare to the last index,as we added at the last
+            front=0; //as nothing has been deleted here so front will be 0 means in the first index
+            n++; //now we will also update the n size as it array size has been resized
+            cnt++; //as we added a element so cnt will also increase as it represents the total element count
+        }
+        else{
+            rare=(rare+1)%n; //we will add the element to the next index thats why increasing rare
+            q[rare]=x;
+            cnt++;
+        }
+    }
+    int deQ(){
+        if(isEmpty()){
+            cout<<"There is nothing to delete"<<endl;
+            return -1;
+        }
+        else if(rare==front){ //if queue has only one element
+        rare=front=0;
+        int x=q[front];
+        front=(front+1)%n;
+        cnt--;
+        return x;
+        }
+        else{
+            int x=q[front]; //we will delete that particular element
+            front=(front+1)%n; //then increase the front value
+            cnt--;
+            return x;
+        }
+    }
+    void display(){
+        int k=front;
+        cout<<"Printing the queue:"<<endl;
+        for(int i=0;i<cnt;i++){
+            cout<<q[k]<<"\t";
+            k=(k+1)%n;
+        }
+        cout<<endl;
+    }
+}; //closing the constructor
+int main(){
+Queue q1(3);
+ q1.enQ(1);
+ q1.enQ(2);
+ q1.enQ(3);
+ q1.display();
+ q1.enQ(4);
+ q1.enQ(5);
+ q1.display();
+ q1.deQ();
+ q1.deQ();
+ q1.enQ(4);
+ q1.display();
+ q1.enQ(5);
+ q1.enQ(6);
+ q1.enQ(7);
+ q1.enQ(8);
+ q1.display();
+}
