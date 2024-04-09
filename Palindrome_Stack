@@ -1,0 +1,58 @@
+#include<iostream>
+using namespace std;
+class Stack{
+    int top,n;
+    int *s;
+public:
+    Stack(int n){
+        this->n=n;
+        top=-1;
+        s=new int[n];
+    }
+    int isEmpty(){
+        if(top==-1){
+            return 1;
+        }
+        return 0;
+    }
+    void push(int x){
+        top=top+1;
+        s[top]=x;
+    }
+    int pop(){
+        int x=s[top];
+        top--;
+        return x;
+    }
+};
+void isPalindrome(int n){
+    int number=n;
+    int last_digit;
+    Stack s(n),p1(n),p2(n);
+    //s is where we will push the last digits
+    //p1 will contain the elements of s
+    //p2 will contain the reverse of s
+    //if p1 and p2 matches that would mean it is a palindrome
+    while(number){ //until the number is zero
+        last_digit=(number%10); //123%10=3 //12%10=2 //1%10=1
+        s.push(last_digit); //pushing 3 //pushing 2 //pushing 1
+        number=number/10; //123/10=12  //12/10=1 //1/10=0 and that will end the loop
+    }
+    p1=s;
+    while(!s.isEmpty()){
+        p2.push(s.pop());
+    }
+   while(!p1.isEmpty()){
+       if(p1.pop()!=p2.pop()){
+           cout<<"Ooops, not a palindrome..."<<endl;
+           return;
+       }
+   }
+   cout<<"Yay, it is a palindrome :)"<<endl;
+}
+int main(){
+   int n;
+   cout<<"Enter a number:"<<endl;
+   cin>>n;
+   isPalindrome(n);
+}
