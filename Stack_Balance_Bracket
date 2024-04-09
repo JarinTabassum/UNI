@@ -1,0 +1,47 @@
+#include<iostream>
+using namespace std;
+class Stack{
+    int n,top;
+    char *s;
+public:
+    Stack(){
+        n=25; //just a safe side
+        top=-1;
+        s=new char[n];
+    }
+    void push(int n){
+        top++;
+        s[top]=n;
+    }
+    int pop(){
+        int x=s[top];
+        top--;
+        return x;
+    }
+};
+char getClosingBracket(char c){ //it will give the last inserted opening brackets appropiate closing braket
+    if(c=='(') return ')';
+    else if(c=='{') return '}';
+    else if(c=='[') return ']';
+    return 0;
+}
+void checkBracket(string str){
+    Stack s;
+    for(int i=0;i<str.length();i++){
+        if(str[i]=='(' || str[i]=='{' || str[i]=='['){
+            s.push(str[i]);
+        }
+        else if(str[i]==')' || str[i]=='}' || str[i]==']'){
+            char t=s.pop(); //we pooped the last inserted opening bracket
+            if(getClosingBracket(t)!=str[i]){
+                cout<<"Error, Unbalanced >.>"<<endl;
+                return;
+            }
+        }
+    }
+    cout<<"Balanced ^.^"<<endl;
+}
+int main(){
+    string s="[1{234{56}}(12)]";
+    checkBracket(s);
+}
