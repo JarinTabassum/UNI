@@ -1,0 +1,125 @@
+#include<iostream>
+using namespace std;
+
+class Stack
+{
+    int n, top;
+    int *s;
+public:
+    Stack(int n)
+    {
+        this->n=n;
+        s=new int[n];
+        top=-1;
+    }
+    int isFull()
+    {
+        if(top==n-1) return 1;
+        return 0;
+    }
+    int isEmpty()
+    {
+        if(top==-1) return 1;
+        return 0;
+    }
+
+    void push(int x)
+    {
+        if(isFull())
+        {
+            printf("Stack is already full. New item can't be inserted.\n");
+        }
+        else
+        {
+            s[++top]=x;
+            //top=top+1 (increasing the top for the next element)
+            //s[top]=x (in that space putting the new element)
+        }
+    }
+    int pop()
+    {
+        if(isEmpty())
+        {
+            printf("Stack is already empty.\n");
+            return -1;
+        }
+        else
+        {
+            return s[top--];
+            //x=s[top] (at first storing the calue of s[top])
+            //then will decrease the top as the amount of that top index as it is  deleted
+            //returning the stored amount
+        }
+    }
+
+    void display()
+    {
+        if(isEmpty())
+        {
+            printf("stack is empty.\n");
+            return;
+        }
+        cout<<"Printing the queue:"<<endl;
+        //starting from 0 to top as it is the mechanism of queue who is first (0) will be out first (0)
+        for(int i=0; i<=top; i++) printf("%d\t",s[i]);
+        printf("\n");
+    }
+};
+
+class Queue{
+    Stack s1,s2;
+public:
+    Queue(int size): s1(size),s2(size) {}
+    void enQ(int x){
+        s1.push(x);
+    }
+    /*
+    s1:3    s2:1      s2.pop()    s1:3  
+       2       2      1 is gone      2   
+       1       3                  
+    print index 0 to top : 2 3 (as in queue FI2FO2)
+    first in 1 , first out 1 (queue)
+    */
+    int deQ(){
+        if(s1.isEmpty()){
+            return -1;
+        }
+        while(!s1.isEmpty()){
+            s2.push(s1.pop());
+        }
+        int x=s2.pop();
+        while(!s2.isEmpty()){
+            s1.push(s2.pop());
+        }
+        return x;
+    }
+    void display(){
+        if(s1.isEmpty()){
+            cout<<"There is nothing to show"<<endl;
+        }
+        s1.display();
+    }
+};
+
+int main(){
+    int n;
+    cout<<"How many elements you want in the queue:"<<endl;
+    cin>>n;
+Queue q1(n);
+ q1.enQ(1);
+ q1.enQ(2);
+ q1.enQ(3);
+ q1.display();
+ q1.enQ(4);
+ q1.enQ(5);
+ q1.display();
+ cout<<"Deleted element is:"<<q1.deQ()<<endl;
+ cout<<"Deleted element is:"<<q1.deQ()<<endl;
+ q1.enQ(4);
+ q1.display();
+ q1.enQ(5);
+ q1.enQ(6);
+ q1.enQ(7);
+ q1.enQ(8);
+ q1.display();
+}
