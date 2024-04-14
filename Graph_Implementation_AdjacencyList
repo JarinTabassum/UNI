@@ -187,7 +187,7 @@ Graph::~Graph(){
 }
 }
 int main(){
-    Graph g(4,true);
+    Graph g(4,true); //by that true and false we can dictate the directed and undirected
     g.addEdge(0,1);
     g.addEdge(1,3);
     g.addEdge(3,2);
