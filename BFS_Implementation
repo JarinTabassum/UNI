@@ -1,0 +1,192 @@
+#include<iostream>
+#include<stack>
+#include<queue>
+#include<climits> //it was needed for the INT_MAX,tho i donno why
+#define white 0 //here we are initialising the colors as numbers
+#define grey 1
+#define black 2
+#define INF INT_MAX
+using namespace std;
+class Graph{
+    int nVertices;
+    bool directed;
+    int **adjacencyMatrix;
+    int *dist; //here distance is an array that will keep all the distances from the src of the elements
+    int *parent; //parent is also an array which will keep track of the parents of the elements
+    int *visited; //same with visited which will keep track the elements visiting position
+public:
+    Graph(int n,bool dir);
+    void addEdge(int u,int v);
+    bool isEdge(int u,int v);
+    void indegree(int u);
+    void outdegree(int u);
+    void display();
+    void BFS(int u);
+    bool isConnected();
+    void getPath(int u,int v);
+    ~Graph();
+};
+
+Graph::Graph(int n,bool dir){
+    nVertices=n;
+    directed=dir;
+    adjacencyMatrix=new int *[nVertices];
+    for(int i=0;i<nVertices;i++){
+        adjacencyMatrix[i]=new int [nVertices];
+    }
+    for(int i=0;i<nVertices;i++){
+        for(int j=0;j<nVertices;j++){
+            adjacencyMatrix[i][j]=0;
+        }
+    }
+    //make sure to allocate memories of these array in the constructor
+    visited=new int[nVertices];
+    dist=new int[nVertices];
+    parent=new int[nVertices];
+}
+
+void Graph::addEdge(int u,int v){
+    if(u<0 || u>nVertices || v<0 || v>nVertices){
+        return;
+    }
+    adjacencyMatrix[u][v]=1;
+    if(!directed){
+        adjacencyMatrix[v][u]=1;
+    }
+}
+
+bool Graph::isEdge(int u,int v){
+    if(u<0 || u>nVertices || v<0 || v>nVertices){
+        cout<<"Invalid";
+        return false;
+    }
+    if(adjacencyMatrix[u][v]==1) return true;
+    else return false;
+}
+
+void Graph::indegree(int u){
+    cout<<"Indegree of "<<u<<" is :"<<"\t";
+    for(int i=0;i<nVertices;i++){
+        if(adjacencyMatrix[i][u]==1){
+            cout<<i<<"\t";
+        }
+    }
+    cout<<endl;
+}
+
+void Graph::outdegree(int u){
+    cout<<"Outdegree of "<<u<<" is : "<<"\t";
+    for(int i=0;i<nVertices;i++){
+        if(adjacencyMatrix[u][i]==1){
+            cout<<i<<"\t";
+        }
+    }
+    cout<<endl;
+}
+void Graph::display(){
+    cout<<"Printing the graph:"<<endl;
+    for(int i=0;i<nVertices;i++){
+        cout<<i<<" :"<<"\t";
+        for(int j=0;j<nVertices;j++){
+            if(isEdge(i,j)){
+                cout<<j<<"\t";
+            }
+        }
+        cout<<endl;
+    }
+}
+
+void Graph::BFS(int src){
+    //at first we have to make all the distance INF and all the vertices white as none of them have been visited yet
+    for(int i=0;i<nVertices;i++){
+        visited[i]=white;
+        dist[i]=INF;
+    }
+    dist[src]=0; //from src to src distance is 0
+    visited[src]=grey; //src has been discovered 
+    parent[src]=-1; //src has no parent so -1
+    queue<int> q; //first in first out, so src will give his adjacents and then will be deleted
+    q.push(src);
+    while(!q.empty()){
+        int u=q.front();
+        q.pop(); //after getting the element for traversal pop it out from the stack
+        for(int i=0;i<nVertices;i++){
+            if(isEdge(u,i)){
+                if(visited[i]==white){ //it hasnt been visited yet as we havent changed the first setting yet
+                q.push(i); //put the adjacent to the stack
+                visited[i]=grey;
+                dist[i]=dist[u]+1; //dist[u]=0 as we set such before that src to src dist=0
+                parent[i]=u;
+                }
+            }
+        }
+        visited[u]=black;
+    }
+    cout<<"Distance from source:"<<endl;
+    for(int i=0;i<nVertices;i++){
+        if(visited[i]==white){ //even after traversing the entire graph if the visited is still white that would mean it is not connected and the distance is infinity
+            cout<<i<<":INF"<<endl;
+        }
+        else 
+        cout<<i<<":"<<dist[i]<<endl;
+    }
+}
+bool Graph::isConnected(){
+    BFS(0); //giving an element as src
+    for(int i=0;i<nVertices;i++){
+        if(visited[i]==white){ //even after bfs if any nodes visited is white that means the graph is not connected
+            return false;
+        }
+    }
+    return true;
+}
+void Graph::getPath(int src,int dest){//from a certain node to another the path we want to detect
+    BFS(src);
+    if(visited[dest]==white){ 
+        cout<<"No path found"<<endl;
+        return;
+    }
+    stack<int> s; //stack as we want to find the first at last, means the dest will be at last and the src will be at first and the path will be from src to dest
+    s.push(dest);
+    int d=dest;
+    dest=parent[dest];
+    while(dest!=-1){
+        s.push(dest); //if we didnt push the parent before then eventually -1 will also be pushed which we dont want thats why we wrote the push first then we initialised the dest again
+        dest=parent[dest];
+    }
+    cout<<"Path between "<<src<<"and "<<d<<" is :";
+    while(!s.empty()){
+        int x=s.top();
+        s.pop();
+        cout<<x<<"\t";
+    }
+    cout<<endl;
+}
+Graph::~Graph(){
+    for(int i=0;i<nVertices;i++){
+        delete [] adjacencyMatrix [i];
+    }
+    //make sure to deallocate these memories in the destructor
+    delete [] adjacencyMatrix;
+    delete [] visited;
+    delete [] dist;
+    delete [] parent;
+}
+
+int main(){
+    Graph g(6,true);
+    g.addEdge(0,1);
+    g.addEdge(1,2);
+    g.addEdge(2,3);
+    g.addEdge(3,4);
+    g.addEdge(4,5);
+    g.addEdge(5,0);
+    g.addEdge(0,3);
+    g.addEdge(1,4);
+    g.addEdge(2,5);
+    g.indegree(0);
+    g.outdegree(0);
+    g.BFS(0);
+    g.getPath(0,5);
+    g.display();
+}
