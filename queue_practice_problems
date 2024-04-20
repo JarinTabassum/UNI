@@ -1,0 +1,140 @@
+//reverse of stack
+void reverse(Queue &q){
+    stack <int> s;
+    while(!q.isEmpty()){
+    s.push(q.deq());
+    }
+    while(!s.empty()){
+        q.enq(s.top());
+        s.pop();
+    }
+} 
+//here we also needed the help of stack,which we got by #include<stack>
+
+
+/*
+//sort the queue
+void sort(){
+    for(int i=0;i<cnt;i++){
+        for(int j=0;j<cnt-i-1;j++){ //as the highest element will be at the end so no need for it to compare again with the rest
+            if(q[(front+j)%n] > q[(front+j+1)%n]){ //is the former one bigger than the later
+                int temp=q[(front+j)%n]; //if yes,swap
+                q[(front+j)%n]=q[(front+j+1)%n];
+                q[(front+j+1)%n]=temp; //like this the highest one will be at the last of the queue by swapping
+            }
+        }
+    }
+}
+//we used bubble sort here
+
+
+
+//sum of a queue
+void sum(Queue &q){
+    int sum=0;
+    while(!q.isEmpty()){ //i think as we needed to use a function of queue thats why we needed that Queue &q as the parameter
+        int x=q.peek();
+        sum+=x;
+        q.deq();
+    }
+    cout<<"Sum:"<<sum;
+}
+
+
+//to find the mode
+void mode(){ //highest frequency
+    sort(); //we have to sort at first as then all the same elements will be next to each other
+    int current=q[front]; //setting the first element as current
+    int current_count=1; //set count to one
+    int mode=q[front]; //the mode is also set to the current one
+    int max_count=1; //max_count is also set to 1
+    for(int i=front+1;i<=rare;i++){ //i=1 the next element
+        if(q[i]==current){ //compare the first i=0 to i=1
+            current_count++; //if same then increase the count
+        }
+        else{
+            if(current_count>max_count){ 
+                max_count=current_count;
+                mode=current;
+            }
+            current=q[i]; //if the current one isnt the same as the previous anymore then shift the current to the next
+            current_count=1; //and the current_count will also be set to 1
+        }
+    }
+    if(current_count>max_count){ //checking the last node if in case that is the mode, as if the last node is mode then the updated max_count will nit get the opportunity ti get compared with the current_count as it will go out of the loop, to handle this situation we added that line
+        max_count=current_count;
+        mode=current;
+    }
+    cout<<"The mode is: "<<mode<<endl;
+}
+
+
+//max and min
+void max(){
+    int max=q[0];
+    for(int i=front+1;i<=rare;i++){
+        if(max<q[i]){
+            max=q[i];
+        }
+    }
+    cout<<"Max:"<<max<<endl;
+}
+
+
+//second highest
+void second_highest(Queue &q){
+    int highest=q.peek();
+    int second_highest=INT_MIN;
+    while(!q.isEmpty()){
+        if(q.peek()>highest){
+            second_highest=highest;
+            highest=q.peek();
+        }
+        else if(q.peek()>second_highest && q.peek()<highest){
+            second_highest=q.peek();
+        }
+        q.deq();
+    }
+    cout<<"Second highest:"<<second_highest<<endl;
+} 
+
+//remove a given element
+void remove_element(Queue &q, int x){
+      Queue temp;
+      bool found=false; //this will help us to track if we even found the element or not 
+      while(!q.isEmpty()){
+             int y=q.peek(); //taking the first element of the queue
+             q.deq(); //then we will delete the element from q as this element will chekced to verify, if it is the given element then it will be deleted, or it will be inserted via temp
+             if(y==x){
+                     found=true;
+                     break;
+             }
+             else{
+                     temp.enq(y); //if the element isnt the given element,then we will add in the temp queue and then temp will be placed to q 
+             }       
+    }
+    if(found==false){
+           cout<<"There is no such element that you want to delete"<<endl;
+    }
+    while(!temp.isEmpty()){
+           q.enq(temp.deq()); //here we are adding the elements of temp in the q which will contain all the elements except that given element
+    }
+}
+
+//remove even
+void remove_even(Queue &q){ //dont forget to add the & before q
+     Queue temp;
+     while(!q.isEmpty()){
+        int x=q.peek();
+        q.deq(); //elements will keep deleting here
+        if(x%2!=0){ //but saving all the odds in temp
+            temp.enq(x);
+        }
+     }
+     while(!temp.isEmpty()){ //and later just the temp(odds) will be placed to the empty q later which will only contain odd
+         q.enq(temp.deq());
+     }
+ }
+     
+  */                   
+                     
