@@ -1,0 +1,92 @@
+#include<iostream>
+#include<stack>
+using namespace std;
+struct node{
+    int data;
+    node *left,*right;
+}
+*root=NULL; //global variable which means we can access it from anywhere which also acts as the head of a linke list
+
+node *createNewNode(int x){
+    node *newnode=new node(); //cpp supports that which is easier thats why wrote it
+    newnode->data=x;
+    newnode->left=newnode->right=NULL;
+    return newnode;
+}
+
+void Insert(int d){
+    node *newnode=createNewNode(d);
+    node *x=root;
+    node *parent=NULL;
+    while(x!=NULL){
+        parent=x; 
+        if(newnode->data<x->data){
+            x=x->left;
+        }
+        else{
+            x=x->right;
+        }
+    }
+    if(parent==NULL){ //no tree has been created yet
+        root=newnode; 
+    }else{
+        if(newnode->data<parent->data){
+            parent->left=newnode;
+        }
+        else{
+            parent->right=newnode;
+        }
+    }
+}
+
+void Inorder(node *t){
+    //t-left -> t -> t-right
+    if(t!=NULL){
+        Inorder(t->left);
+        printf("%d ",t->data);
+        Inorder(t->right);
+    }
+}
+
+void Preorder(node *t){
+    //t -> t-left -> t->right
+    if(t!=NULL){
+        printf("%d ",t->data);
+        Preorder(t->left);
+        Preorder(t->right);
+    }
+}
+
+/*void Postorder(node *t){
+    if()
+}*/
+
+
+node *Search(int k){
+    node *x=root; //current node
+    while(x!=NULL && x->data!=k){
+        if(k< x->data){
+            x=x->left;
+        }
+        else{
+            x=x->right;
+        }
+    }
+    return x;
+}
+
+
+int main(){
+    int c;
+    Insert(32);
+    Insert(12);
+    Insert(45);
+    Insert(65);
+    Insert(6);
+    Insert(16);
+    Inorder(root);
+    node *n=Search(3);
+    if(n==NULL) cout<<"Key is not found"<<endl;
+    else cout<<"key is found"<<endl;
+    
+}
