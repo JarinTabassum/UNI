@@ -1,0 +1,215 @@
+//Stack sorting
+void Stack::sort(){
+    Stack temp;
+    while(!isEmpty()){
+        int x=pop(); //we are storing and deleting the top from the original stack
+        while(!temp.isEmpty() && temp.peek()>x){
+            push(temp.pop()); //temp will store small to large so if temps top is larger than originals top then we will delete that top from temp and will give it back to original until it turns at a point when temps top is smaller than this
+        }
+        temp.push(x); //when the element is larger than temps top we will store it as it is in ascending order (small to big)
+        //also the very first element of the myS will directly store here as temp was empty which does not satisfy the first rule (!temp.isEmpty()) 
+    }
+    while(!temp.isEmpty()){
+        push(temp.pop()); 
+        //here we will store the ascending order in descending in myS, and then that descending will print as ascending in the result
+    }
+}
+
+
+//stack reverse
+void Stack::reverse(){
+    Stack temp;
+    while(!isEmpty()){
+        temp.push(pop());
+    }
+    cout<<"The reversed stack is:"<<endl;
+    temp.display();
+}
+
+//Stack average
+void Stack::average(){
+    float avg;
+    float sum=0.0;
+    int count=0;
+    while(!isEmpty()){
+        sum+=pop();
+        count++;
+    }
+    if(count>0){
+    avg=sum/count;
+    cout<<"The average of the stack is:"<<avg<<endl;
+    }
+}
+
+
+//Stack max
+void Stack::max(){
+    int max=peek();
+    while(!isEmpty()){
+        int x=pop();
+        if(x>max){
+            max=x;
+        }
+    }
+    cout<<"Max:"<<max<<endl;
+}
+
+
+
+//Stack middle
+void Stack::middle(){
+    int m=floor((top+1)/2); //top+1 is the size as top=-1 so we are adding that 1 to get the actual size
+    cout<<"Middle:"<<myS[m]<<endl;
+}
+
+
+//Deleting the middle
+void Stack::delete_middle(){
+    int m=floor((top+1)/2);
+    cout<<"Middle:"<<myS[m]<<endl;
+    Stack temp;
+    while(!isEmpty()){
+        int x=pop(); //we are popping from the original 
+        if(myS[m]!=x){
+            temp.push(x); //and pushing it only when it is not equal to the middle so temp will have all element of the main except the middle
+        }
+    }
+    while(!temp.isEmpty()){ //we did that to arrage nothing else, if not needed to ascend then you can skip it
+        push(temp.pop());
+    }
+    display();
+}
+
+
+//Deleting the max
+void Stack::delete_max(){
+    Stack temp; //the stack to store the elements after popping them to find max
+    int max=peek(); //getting the top element from the original
+    while(!isEmpty()){ //until the original is empty keep going
+        int x=pop(); //we are deleting the top element
+        temp.push(x); //also stroing it in temp so that it doesnt get lost
+        if(x>max){ 
+            max=x; //now we are comparing to find the max 
+        }
+    }
+    Stack t; //we are taking another stack to delete the max
+    while(!temp.isEmpty()){ //we will run it till the end of the temp stack
+        int y=temp.pop(); //delete the first element from temp
+        if(max!=y){ //is that deleted element equal to the max 
+            t.push(y); //if not then store to the new stack, this new stack will every element except the max
+        }
+    }
+    while(!t.isEmpty()){ //now we are storing the elements to the original stack
+        push(t.pop());
+    }
+    cout<<"Deleting the max:"<<endl;
+    display(); //and displaying it
+}
+
+
+//Deleting the duplicate
+void Stack::delete_duplicates(){
+int size=top+1; //as top starts with -1, thats why size will be +1 as array starts from index 0, not -1
+int temp[size]; //we will have a temporary array which will have the same size as the original stack
+int count=0; //it will help to initiate temps index
+while(!isEmpty()){ //store original to temp till empty
+    temp[count++]=pop(); //at first temp[0]=pop() then top[1]=pop() and it will keep continuing
+}
+for(int i=0;i<count;i++){ //first element
+    for(int j=i+1;j<count;j++){ //second to last element
+        if(temp[i]==temp[j]){ //if mathces means duplicate
+                  temp[j]=-1; //the duplicate as temp[j] so means the duplicate of the unique which appeared first at 
+        }
+   }
+}
+for(int k=count-1;k>=0;k--){ //top=count-1
+     if(temp[k]!=-1){ //as only duplicates are -1 so except that print all
+        push(temp[k]);
+     }
+}
+cout<<"The unique elements are:"<<endl;
+display();
+}
+
+//delete all occurrances of one element
+void Stack::delete_element(int x){
+    Stack temp;
+    while(!isEmpty()){
+        int y=pop();
+        if(y!=x){
+            temp.push(y);
+        }
+    }
+    while(!temp.isEmpty()){
+        push(temp.pop());
+    }
+    display();
+}
+
+
+//find the kth element
+void Stack::kth_element{
+int size=top+1; //as top=-1 so size is top+1
+    int temp[size]; //new temporary array will have the size
+    int count=0; 
+    while(!isEmpty()){ //till the original stack is complete
+        temp[count++]=pop();  //keep pushing it to the new temporary array where count will be handle the index 0,1,2,3... , but obviously it store in a reverse manner
+    }
+    int kth_element=temp[x-1]; //the k-th element will be on the index  n-1
+    //suppose element number 2,which is in index 1, as index starts from 2, so we have to deduct 1
+    for(int i=count-1;i>=0;i--){ //temp poses the reverse of the original stack,so reverse it back to the original stack 
+        push(temp[i]); //remember we are not deleting the elements from the temp as we need it to find the kth element as the elements index is related to it
+    }
+    cout<<kth_element; 
+}
+
+
+//reverse the stack using linked list (for better explanation jenny)
+//here keep in mind that we are not reversing the data but we are revesing the address, the first one wont carry the next nodes address, rather the next node will have the previous ones address
+void Stack::reverse(){
+    node *pre=NULL; //we are taking a node set to null (as current is head,so its pre will be null,in that sense)
+    node *current=head; 
+    node *nextnode=head;
+    while(nextnode!=NULL){ //nextnode is the one progressing at first thats why by this we can track the end
+        nextnode=nextnode->next; //nextnode is moving to the next node because if we are making the heads next to pre or 0,it will cut off all the connections with the rest of the node, so to get access of the next nodes,we need to shift it to the next
+
+        current->next=pre; //currents next will be previous which is null for now, as the first element will be the last one which will have null as its next nodes address,so fixing that with this
+
+        pre=current; //to make the same process running we will move the pre to current, now pre will be the first element
+
+        current=nextnode; //current will be nextnode, which means the second node where the nextnode is
+
+      //so basically pre current next
+    }
+    head=pre;
+    display();
+}
+
+
+//sort in a dynamic array Stack
+void Stack::sort(){ //basically bubble sort
+    int temp;
+    for(int i=0;i<n;i++){
+        for(int j=i+1;j<n;j++){
+            if(myS[j]>myS[i]){
+                temp=myS[i];
+                myS[i]=myS[j];
+                myS[j]=temp;
+            }
+        }
+    }
+}
+
+
+//middle element of a dynamic array 
+void Stack::middle(){
+    int count=(n-1)/2; //we will be increasing the n as n++ when the stack is full, and when not full it will be containing n anyway
+    for(int i=top;i>=0;i--){
+        if(count==i && count%2!=0){ //if odd theat middle element
+            cout<<"The middle element is:"<<myS[i];
+        }
+        else if(count==i && count%2==0){ //if even two middle element
+            cout<<"The middle element is:"<<myS[i+1]<<" "<<myS[i];
+        }
+    }
+}
