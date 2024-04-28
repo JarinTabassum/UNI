@@ -50,7 +50,7 @@ void Graph::addEdge(int u,int v){
     }
     node *n1=createNewNode(v); //adjacencyList=new *node[n]=nullptr was the initial one
     n1->next=adjacencyList[u]; //the nullptr will be after the new addded edge
-    adjacencyList[u]=n1; //the vertex head will point to the new added edge
+    adjacencyList[u]=n1; //the node will have that new added edge as its front member instead of nullptr, thats why we shifted it
 
     node *n2=createNewNode(u);
     n2->next=adjacencyList[v];
