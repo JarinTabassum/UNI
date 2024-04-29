@@ -1,0 +1,78 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define ROWS 5
+#define COLS 5
+
+int maze[ROWS][COLS] = {
+    {0, 1, 0, 0, 2},
+    {0, 0, 0, 1, 0},
+    {0, 3, 1, 0, 0},
+    {0, 1, 0, 1, 0},
+    {0, 0, 0, 0, 0}
+};
+
+bool visited[ROWS][COLS];
+
+// Function to check if a cell is valid to move
+bool isValid(int row, int col) {
+    return (row >= 0 && row < ROWS && col >= 0 && col < COLS && maze[row][col] != 1 && !visited[row][col]);
+}
+
+// Function to perform DFS to find paths with treasures
+void dfs(int row, int col, int path_row[], int path_col[], int length) {
+    if (!isValid(row, col)) {
+        return;
+    }
+
+    visited[row][col] = true;
+    path_row[length] = row;
+    path_col[length] = col;
+
+    // If the exit is found, check if the path contains treasures
+    if (maze[row][col] == 2) {
+        bool treasure_found = false;
+        for (int i = 0; i <= length; i++) {
+            if (maze[path_row[i]][path_col[i]] == 3) {
+                treasure_found = true;
+                break;
+            }
+        }
+
+        // If treasures are found, print the path
+        if (treasure_found) {
+            printf("Path with treasure: ");
+            for (int i = 0; i <= length; i++) {
+                if(i!=length){
+                printf("(%d,%d)->", path_row[i], path_col[i]);
+                }
+                else{
+                printf("(%d,%d)", path_row[i], path_col[i]);
+                }
+            }
+            printf("\n");
+        }
+    }
+
+    // Explore all possible directions (up, down, left, right)
+    dfs(row + 1, col, path_row, path_col, length + 1);
+    dfs(row - 1, col, path_row, path_col, length + 1);
+    dfs(row, col + 1, path_row, path_col, length + 1);
+    dfs(row, col - 1, path_row, path_col, length + 1);
+
+    // Backtrack
+    visited[row][col] = false;
+}
+
+// Function to find paths with treasures starting from given position
+void find_paths_with_treasures(int start_row, int start_col) {
+    int path_row[ROWS * COLS], path_col[ROWS * COLS];
+    dfs(start_row, start_col, path_row, path_col, 0);
+}
+
+int main() {
+    // Test with given maze and starting position
+    find_paths_with_treasures(1, 0);
+
+    return 0;
+}
