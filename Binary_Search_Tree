@@ -87,6 +87,37 @@ void Postorder(NODE *root){
     Postorder(root->right);
     cout<<root->data<<"\t";
 }
+
+int height(NODE *root){
+   if(root==NULL) return -1; //we will return -1 becuase of the extra edge we are considering the leaf has,like if it were 0,then leaf would have gotten 0+1=1 height,which would have been wrong
+   int left_height=height(root->left); //here we will go through each nodes left and right child, so the leaf will return -1 and in the naswer -1+1=0,
+//so the leaf will give 0, which is right as leaf has no height(edge wise), then we will move to leafs parent it will also get which will have 0 as the return int from the leaf
+//then we will add +1 so it will give 0+1=1 which is also correct, thats how we will get to each node and finf their heights, and whichever one is the highest will be the ultimate answer
+   int right_height=height(root->right);
+   return left_height>right_height ? left_height+1 : right_height+1;
+   //or this one return max(left_height,right_height)+1;
+}
+
+
+int depth(NODE *root,int x){
+    if(root==NULL){
+        return -1; //node has not being found
+    }
+    else if(root->data==x){
+        return 0; //node found at root, depth is 0
+    }
+    int left_depth=depth(root->left,x);
+        if(left_depth!=-1){ //element does exist, it isnt -1
+            return 1+left_depth; //as we just found it in the left child so depth is 0+1=1 from the root
+        }
+        
+    int right_depth=depth(root->right,x);
+        if(right_depth!=-1){
+            return 1+right_depth;
+        }
+    
+    return -1; //if it is present in none of the trees
+}
 int main(){
     NODE *root=NULL;
     root=insert(root,50);
@@ -108,4 +139,6 @@ int main(){
     root=deletion(root,40);
     Inorder(root);
     cout<<endl;
+    cout<<height(root)<<endl;
+    cout<<depth(root,50);
 }
