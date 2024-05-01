@@ -1,92 +1,111 @@
 #include<iostream>
-#include<stack>
 using namespace std;
-struct node{
-    int data;
-    node *left,*right;
-}
-*root=NULL; //global variable which means we can access it from anywhere which also acts as the head of a linke list
-
-node *createNewNode(int x){
-    node *newnode=new node(); //cpp supports that which is easier thats why wrote it
+struct NODE{
+    int data; //here as the node is representing the root so just int data
+    struct NODE *left; //here as the left will also work as a root so node *left
+    struct NODE *right; //here as the right will also work as a root so node *right
+};
+NODE *createNewNode(int x){
+    NODE *newnode=new NODE;
     newnode->data=x;
-    newnode->left=newnode->right=NULL;
+    newnode->right=NULL;
+    newnode->left=NULL;
     return newnode;
 }
-
-void Insert(int d){
-    node *newnode=createNewNode(d);
-    node *x=root;
-    node *parent=NULL;
-    while(x!=NULL){
-        parent=x; 
-        if(newnode->data<x->data){
-            x=x->left;
+NODE *insert(NODE *root,int x){
+    if(root==NULL){
+        return createNewNode(x);
+    }
+    else if(x<=root->data){
+        root->left=insert(root->left,x); //here we will be returning a new root left after insertion, and we update root->left with the result
+    }
+    else{
+        root->right=insert(root->right,x);
+        
+    }
+    return root;
+}
+NODE *find_min(NODE *root){
+    while(root->left!=NULL){
+        root=root->left;
+    }
+    return root;
+}
+NODE *deletion(NODE *root,int x){
+    if(root==NULL){ //if the root is empty or the node to be deleted is not found then just return the root
+        return root;
+    }
+    else if(x<root->data){
+        root->left=deletion(root->left,x); //d->left=deletion() is because after deleting the node,it will return a new tree, place that to the left postion (d->lef
+    }
+    else if(x>root->data){
+        root->right=deletion(root->right,x);
+    }
+    else{
+        //here after searching from left or right once we found the element which is x==d->data  we will start the deletion process
+        //case 1: no child
+        if(root->left==NULL && root->right==NULL){
+            delete root;
+            root=NULL; //to make sure that deleted node exists no where in this tree
         }
+        //case 2: 1 child
+        else if(root->left==NULL){
+            NODE *temp=root;
+            root=root->right;
+            delete temp;
+        }
+        else if(root->right==NULL){
+            NODE *temp=root;
+            root=root->left;
+            delete temp;
+        }
+        //case 3: 2 child
         else{
-            x=x->right;
+            NODE *temp=find_min(root->right); //find the minimum of the right subtree
+            root->data=temp->data;  //here we are changing the node to be deleted with the minimum_right one, so two nodes will be of the same amount (both the root and also that minimum_right)
+            root->right=deletion(root->right,temp->data);
+            //now we will be sending the right node and the temp->data to delete(the duplicate one as we have the root initialised as the same value)
         }
     }
-    if(parent==NULL){ //no tree has been created yet
-        root=newnode; 
-    }else{
-        if(newnode->data<parent->data){
-            parent->left=newnode;
-        }
-        else{
-            parent->right=newnode;
-        }
-    }
+    return root; //finally after deleting the node, lets return the modified one 
 }
-
-void Inorder(node *t){
-    //t-left -> t -> t-right
-    if(t!=NULL){
-        Inorder(t->left);
-        printf("%d ",t->data);
-        Inorder(t->right);
-    }
+void Inorder(NODE *root){
+    if(root==NULL) return;
+    Inorder(root->left); //here after traversing left to left when we finally find the root to be null,that means the left of the root is null, so it will return to its caller which is Inorder(root->left) that root_>left==null and then it will print its next line which is cout<<root->data ,thats how the leftmost element will be printed (it follows a call stack mechanism)
+    cout<<root->data<<"\t";
+    Inorder(root->right);
 }
-
-void Preorder(node *t){
-    //t -> t-left -> t->right
-    if(t!=NULL){
-        printf("%d ",t->data);
-        Preorder(t->left);
-        Preorder(t->right);
-    }
+void Preorder(NODE *root){
+    if(root==NULL) return;
+    cout<<root->data<<"\t";
+    Preorder(root->left);
+    Preorder(root->right);
 }
-
-/*void Postorder(node *t){
-    if()
-}*/
-
-
-node *Search(int k){
-    node *x=root; //current node
-    while(x!=NULL && x->data!=k){
-        if(k< x->data){
-            x=x->left;
-        }
-        else{
-            x=x->right;
-        }
-    }
-    return x;
+void Postorder(NODE *root){
+    if(root==NULL) return;
+    Postorder(root->left);
+    Postorder(root->right);
+    cout<<root->data<<"\t";
 }
-
-
 int main(){
-    int c;
-    Insert(32);
-    Insert(12);
-    Insert(45);
-    Insert(65);
-    Insert(6);
-    Insert(16);
+    NODE *root=NULL;
+    root=insert(root,50);
+    root=insert(root,45);
+    root=insert(root,40);
+    root=insert(root,35);
+    root=insert(root,30);
+    root=insert(root,25);
+    root=insert(root,20);
+    root=insert(root,15);
+    root=insert(root,10);
     Inorder(root);
-    node *n=Search(3);
-    if(n==NULL) cout<<"Key is not found"<<endl;
-    else cout<<"key is found"<<endl;
-    
+    cout<<endl;
+    cout<<"Delete 20:"<<endl;
+    root=deletion(root,20);
+    Inorder(root);
+    cout<<endl;
+    cout<<"Delete 40:"<<endl;
+    root=deletion(root,40);
+    Inorder(root);
+    cout<<endl;
 }
