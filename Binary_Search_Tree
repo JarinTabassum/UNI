@@ -118,6 +118,63 @@ int depth(NODE *root,int x){
     
     return -1; //if it is present in none of the trees
 }
+
+
+NODE *Find(NODE *root,int x){
+    if(root==NULL || x==root->data) return root;
+    if(x<root->data){
+        Find(root->left,x);
+    }
+    else{
+        Find(root->right,x);
+    }
+}
+
+int succ(NODE *root,int x){
+        NODE *current=Find(root,x);
+        if(current==NULL) return 0; //data could not be found in the tree
+        if(current->right!=NULL){ //if has a right subtree then its minimum is the suc 
+            NODE *min=find_min(root->right);
+            return min->data;
+        }
+        else{ //if does not have a right subtree
+            /*    15
+                 /  \
+                13  20
+               / \
+              8  14
+            */
+            NODE *successor=NULL;
+            NODE *ancestor=root; //15
+            while(ancestor!=current){
+            if(current->data<ancestor->data){ //14<15, 14<13(no)(break it,go to else)
+                successor=ancestor; //suc=15,anc=13
+                ancestor=ancestor->left; //anc=13
+            }
+            else if(current->data>ancestor->data){ //14>13
+                ancestor=ancestor->right; //anc=14
+            }
+        }
+            return successor->data; //15 (the inorder suc of 14)
+    } 
+}
+
+
+bool isBST(NODE *root,int min,int max){
+    if(root==NULL) return true; //we reached till the end while fulfillling the other rules
+    else if(root->data < min || root->data >max){
+        return false; //it means the situation where left is higher or right is lower which is a violation to BST
+    }
+    else{
+     return isBST(root->left, min , root->data-1) &&
+     isBST(root->right, root->data+1, max);
+     //here means in the left subtree minimum can be anything but maximum can not be greater than root (thats why max=root->data-1),same with the right subtree max can vbe anything but min has to be greater than root, and when both are true from every recusion we know its a BST
+    }
+}
+bool BST(NODE *root){
+    return isBST(root,INT_MIN,INT_MAX);
+}
+
 int main(){
     NODE *root=NULL;
     root=insert(root,50);
