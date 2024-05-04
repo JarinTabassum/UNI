@@ -62,6 +62,30 @@ void Stack::middle(){
     cout<<"Middle:"<<myS[m]<<endl;
 }
 
+//Deleting the middle
+void stack::middle(){
+    node *slow=head;
+    node *fast=head;
+    while(fast!=NULL && fast->next!=NULL){
+        slow=slow->next;
+        fast=fast->next->next;
+    }
+    cout<<endl<<"The middle element is:"<<endl;
+    int x=slow->data;
+    cout<<x<<endl;
+    stack temp;
+    while(!isEmpty()){
+        int cut=pop();
+        if(cut!=x){
+            temp.push(cut);
+        }
+    }
+    while(!temp.isEmpty()){
+        push(temp.pop());
+    }
+    display();
+}
+
 
 //Deleting the middle
 void Stack::delete_middle(){
