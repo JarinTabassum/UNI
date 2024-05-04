@@ -171,6 +171,60 @@ void Stack::delete_element(int x){
 }
 
 
+//deleting the duplicate
+void stack::delete_duplicate(){
+    node *current,*runner,*temp;
+   for(current=head;current!=NULL;current=current->next){
+       for(runner=current;runner->next!=NULL;){
+        if(current->data==runner->next->data){
+            temp=runner->next;
+            runner->next=runner->next->next;
+            free (temp);
+        }
+        else{
+            runner=runner->next;
+        }
+       }
+    }
+    display();
+}
+
+
+
+
+//find the kth and then delete it
+void stack::find_kth_then_delete(){ 
+    stack temp;
+    int count=0;
+    int kth_element=5;
+    while(!isEmpty() && count<kth_element){
+        temp.push(pop());
+        count++;
+    }
+    int x=peek();
+    cout<<"The to be removed element is:"<<x<<endl;
+    while(!temp.isEmpty()){
+        push(temp.pop());
+    }
+    while(!isEmpty()){
+        int cut=pop();
+        if(cut!=x){
+            temp.push(cut);
+        }
+/* //if you want to replace the kth element to something then
+else if(cut==x){
+cut=replace; //here both are integers
+} */
+       }
+    while(!temp.isEmpty()){
+        push(temp.pop());
+    }
+    display();
+}
+
+
+
+
 //find the kth element
 void Stack::kth_element{
 int size=top+1; //as top=-1 so size is top+1
