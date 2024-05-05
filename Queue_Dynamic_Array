@@ -1,3 +1,5 @@
+//remember in queue rare(add) will increase before taking the index (for making free space for the next one first)
+//front(delete) will increase after the index (for taking the element to be deleted at first, then we will move to the next)
 #include<iostream>
 using namespace std;
 class Queue{
