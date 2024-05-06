@@ -38,12 +38,12 @@ void isPalindrome(int n){
         s.push(last_digit); //pushing 3 //pushing 2 //pushing 1
         number=number/10; //123/10=12  //12/10=1 //1/10=0 and that will end the loop
     }
-    p1=s;
+    p1=s; //reverse of the number is in p1
     while(!s.isEmpty()){
-        p2.push(s.pop());
+        p2.push(s.pop()); //the actual number is stored in p2
     }
    while(!p1.isEmpty()){
-       if(p1.pop()!=p2.pop()){
+       if(p1.pop()!=p2.pop()){ //if the reverse and actual is same then it is palindrome
            cout<<"Ooops, not a palindrome..."<<endl;
            return;
        }
