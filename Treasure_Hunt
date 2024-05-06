@@ -12,7 +12,7 @@ int maze[ROWS][COLS] = {
     {0, 0, 0, 0, 0}
 };
 
-bool visited[ROWS][COLS];
+bool visited[ROWS][COLS]; //all the elements of visited has been assigned to false by default
 
 // Function to check if a cell is valid to move
 bool isValid(int row, int col) {
