@@ -291,3 +291,60 @@ void Stack::middle(){
         }
     }
 }
+
+
+//bracket is redundant
+bool isRedundant(char *expr) {
+    int len = strlen(expr);
+    char stack[len]; // Stack to store characters
+    int top = -1; // Stack top index
+
+    for (int i = 0; i < len; i++) {
+        if (expr[i] != ')') {
+            stack[++top] = expr[i]; // Push non-closing parentheses characters onto the stack
+        } else {
+            bool hasOperator = false; // Flag to check if an operator is present
+            while (stack[top] != '(') {
+                if (stack[top] == '+' || stack[top] == '-' || stack[top] == '*' || stack[top] == '/') {
+                    hasOperator = true;
+                }
+                top--; // Pop characters until '(' is encountered
+            }
+            top--; // Pop '('
+            if (!hasOperator) {
+                return true; // Redundant parentheses found if no operator is encountered within parentheses
+            }
+        }
+    }
+    return false; // No redundant parentheses found
+}
+
+
+//balanced bracket 
+int stack::top_element(){
+        if(isEmpty()){
+            cout<<"There is nothing to show"<<endl;
+        }
+        int y=myS[top];
+        return y;
+    }
+    char getClosingBracket(char t){
+        if(t=='(') return ')';
+        else if(t=='{') return '}';
+        else if(t=='[') return ']';
+    }
+    void stack::checkBracket(string s){
+        for(int i=0;i<s.length();i++){
+            if(s[i]=='(' || s[i]=='{' || s[i]=='['){
+                push(s[i]);
+            }
+            else if(s[i]==')' || s[i]=='}' || s[i]==']'){
+                char t=pop();
+                if(getClosingBracket(t)!=s[i]){
+                    cout<<"Eh,no"<<endl;
+                    return;
+                }
+            }
+            }
+            cout<<"yes"<<endl;
+    }
