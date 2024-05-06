@@ -89,13 +89,20 @@ void Postorder(NODE *root){
 }
 
 int height(NODE *root){
-   if(root==NULL) return -1; //we will return -1 becuase of the extra edge we are considering the leaf has,like if it were 0,then leaf would have gotten 0+1=1 height,which would have been wrong
-   int left_height=height(root->left); //here we will go through each nodes left and right child, so the leaf will return -1 and in the naswer -1+1=0,
+          if(root==NULL) return -1; 
+
+//we will return -1 becuase of the extra edge we are considering the leaf has,like if it were 0,then leaf would have gotten 0+1=1 height,which would have been wrong
+          
+          int left_height=height(root->left); 
+
+//here we will go through each nodes left and right child, so the leaf will return -1 and in the naswer -1+1=0,
 //so the leaf will give 0, which is right as leaf has no height(edge wise), then we will move to leafs parent it will also get which will have 0 as the return int from the leaf
 //then we will add +1 so it will give 0+1=1 which is also correct, thats how we will get to each node and finf their heights, and whichever one is the highest will be the ultimate answer
-   int right_height=height(root->right);
-   return left_height>right_height ? left_height+1 : right_height+1;
-   //or this one return max(left_height,right_height)+1;
+          
+          int right_height=height(root->right);
+          return left_height>right_height ? left_height+1 : right_height+1;
+
+//or this one return max(left_height,right_height)+1;
 }
 
 
