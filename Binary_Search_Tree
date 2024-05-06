@@ -88,7 +88,7 @@ void Postorder(NODE *root){
     cout<<root->data<<"\t";
 }
 
-int height(NODE *root){
+int height(NODE *root){ //from X NODE to LEAF node
           if(root==NULL) return -1; 
 
 //we will return -1 becuase of the extra edge we are considering the leaf has,like if it were 0,then leaf would have gotten 0+1=1 height,which would have been wrong
@@ -106,7 +106,7 @@ int height(NODE *root){
 }
 
 
-int depth(NODE *root,int x){
+int depth(NODE *root,int x){ //from ROOT to X NODE
     if(root==NULL){
         return -1; //node has not being found
     }
