@@ -170,7 +170,9 @@ int succ(NODE *root,int x){
 bool isBST(NODE *root,int min,int max){
     if(root==NULL) return true; //we reached till the end while fulfillling the other rules
     else if(root->data < min || root->data >max){
-        return false; //it means the situation where left is higher or right is lower which is a violation to BST
+        return false; 
+//it means the situation where left is higher or right is lower which is a violation to BST
+//after one iteration max=root_data-1, min=root->data+1, and if this min and max doesnt match then the rule will violate
     }
     else{
      return isBST(root->left, min , root->data-1) &&
