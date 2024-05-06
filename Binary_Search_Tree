@@ -106,7 +106,7 @@ int height(NODE *root){ //from LEAF to X NODE  //down to up
 }
 
 
-int depth(NODE *root,int x){ //from ROOT to X NODE //up uo down
+int depth(NODE *root,int x){ //from ROOT to X NODE //up to down
     if(root==NULL){
         return -1; //node has not being found
     }
@@ -153,7 +153,7 @@ int succ(NODE *root,int x){
             */
             NODE *successor=NULL;
             NODE *ancestor=root; //15
-            while(ancestor!=current){
+            while(ancestor!=current){ // 15!=14
             if(current->data<ancestor->data){ //14<15, 14<13(no)(break it,go to else)
                 successor=ancestor; //suc=15,anc=13
                 ancestor=ancestor->left; //anc=13
